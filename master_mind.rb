@@ -135,7 +135,7 @@ class Game
     @player_lost = false
   end
 
-  public
+  private
   def round
     @computer_code = random_colors
     while @player_won == false || @player_lost == false do
