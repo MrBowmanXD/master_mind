@@ -84,7 +84,7 @@ class Game
       if @continue == 'y'
         round
       else
-        return
+        break
       end
     end
   end
@@ -92,24 +92,30 @@ class Game
   private 
   def player_round
     question
-    puts "\n#answer: #{@computer_code}"
     @response = gets.chomp
     @response_array = @response.split(" ")
     puts @response_array
     @response_array.each_with_index do |response, index|
       if response == @computer_code[index]
         @win_condition[index] = true
+        system("clear")
+        puts "Correct guess"
+        sleep(5)
       else
         system("clear")
         puts "Wrong order buddy"
+        sleep(5)
       end
         puts "\n\nDone checking..."
+        sleep(5)
       if @win_condition[0] == true && @win_condition[1] == true && @win_condition[2] == true && @win_condition[3] == true
         system("clear")
         puts "Well done, you win!"
+        sleep(5)
         @player_won = true
       end
     end
+    question
     @rounds += 1
   end
 
