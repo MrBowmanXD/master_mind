@@ -47,6 +47,13 @@ module Message
     puts "\n\nWant to continue?\n\n"
     puts "[y/n]"
   end
+
+  def mode_options
+    system("clear")
+    puts "Choose if you want to be the guesser or the creator of the secret code\n\n"
+    puts "g) Guesser\n"
+    puts "c) Creator of the secret code\n"
+  end
 end
 
 module Colors
@@ -75,16 +82,31 @@ class Game
     if @game_mode == 'm'
       question_player_two
       @player_two = gets.chomp
+      guesser_or_coder
     elsif @game_mode == 's'
       @player_two = 'Computer'
+      guesser_or_coder
       computer_intro
     end
     while @continue != 'y' || @continue != 'n' do
       @continue = gets.chomp
-      if @continue == 'y'
+      if @continue == 'y' && @options == 'g'
         round
         break
       elsif @continue == 'n'
+        break
+      end
+    end
+  end
+
+  private 
+  def guesser_or_coder
+    mode_options
+    @options = gets.chomp
+    while @options != 'g' || @options != 'c' do
+      if @options == 'g'
+        break
+      elsif @options == 'c'
         break
       end
     end
@@ -95,7 +117,6 @@ class Game
     question
     @response = gets.chomp
     @response_array = @response.split(" ")
-    puts @response_array
     @response_array.each_with_index do |response, index|
       if response == @computer_code[index]
         @win_condition[index] = true
