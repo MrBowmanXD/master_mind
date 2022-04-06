@@ -61,6 +61,8 @@ class Game
     greetings
     @win_condition = Array.new(4, false)
     @rounds = 0
+    @player_lost = false
+    @player_won = false
   end
 
   public
@@ -91,6 +93,7 @@ class Game
   private 
   def player_round
     question
+    puts "#answer #{@computer_code}"
     @response = gets.chomp
     @response_array = @response.split(" ")
     puts @response_array
@@ -113,6 +116,9 @@ class Game
         sleep(5)
         @player_won = true
       end
+    end
+    if @player_won == false && @rounds == 12
+      @player_lost = true
     end
     @rounds += 1
   end
@@ -163,6 +169,9 @@ class Game
       else
         while @player_won == false || @player_lost == false do
           player_round
+          if @player_won == true || @player_lost == true
+            break
+          end
         end
       end
   end
