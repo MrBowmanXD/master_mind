@@ -93,7 +93,6 @@ class Game
   private 
   def player_round
     question
-    puts "#answer #{@computer_code}"
     @response = gets.chomp
     @response_array = @response.split(" ")
     puts @response_array
