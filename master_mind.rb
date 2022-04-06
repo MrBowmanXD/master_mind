@@ -76,14 +76,13 @@ class Game
     elsif @game_mode == 's'
       @player_two = 'Computer'
       computer_intro
-    else
-      welcome_message
     end
     while @continue != 'y' || @continue != 'n' do
       @continue = gets.chomp
       if @continue == 'y'
         round
-      else
+        break
+      elsif @continue == 'n'
         break
       end
     end
@@ -115,7 +114,6 @@ class Game
         @player_won = true
       end
     end
-    question
     @rounds += 1
   end
 
@@ -129,6 +127,7 @@ class Game
   def reset 
     @player_won = false
     @rounds = 0
+    @player_lost = false
   end
 
   public
@@ -142,24 +141,29 @@ class Game
           if @continue == 'y'
             reset
             round
-          else
+            break
+          elsif @continue == 'n'
             break
           end
         end
       elsif @player_won == false && @rounds == 12
         player_lost
+        @player_lost = true
         continue
         while @continue != 'y' || @continue != 'n' do
           @continue = gets.chomp
           if @continue == 'y'
             reset
             round
-          else 
+            break
+          elsif @continue == 'n' 
             break
           end
         end
       else
-        player_round
+        while @player_won == false || @player_lost == false do
+          player_round
+        end
       end
   end
 end
