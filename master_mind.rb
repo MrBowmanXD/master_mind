@@ -24,21 +24,46 @@ module Message
     puts "Hello there, I'm the computer\n\n"
     puts "Nice to meet you, soon you will lose human\n\n"
     puts "HAHAHAHAAHAHAHAHAHAHAHAHAAHAHAHAHAHA\n\n"
-    puts "Let's play, shall we?\n\n"
+    puts "Let's play, shall we?[y/n]\n\n"
   end
 
   def game_mode_invalid
     puts "\n\nChoose the correct letter dumbass\n\n"
   end
+
+  def question 
+    system("clear")
+    puts "Guess the correct color order!\n\n"
+    puts "(Put your guess in order and with spaces between colors)\n\n"
+    puts "(Pick from red, green, yellow and blue)\n\n"
+  end
+
+  def player_lost
+    puts "\n\nYou lose"
+    puts "\n\n(How that's possible...)"
+  end
+
+  def continue
+    puts "\n\nWant to continue?\n\n"
+    puts "[y/n]"
+  end
+end
+
+module Colors
+  COLORS = ['red', 'green', 'yellow', 'blue']
 end
 
 class Game 
   include Message
+  include Colors
 
   def initialize 
     greetings
+    @win_condition = Array.new(4, false)
+    @rounds = 0
   end
 
+  public
   def welcome_message
     @game_mode = gets.chomp
     system("clear")
@@ -54,6 +79,82 @@ class Game
     else
       welcome_message
     end
+    while @continue != 'y' || @continue != 'n' do
+      @continue = gets.chomp
+      if @continue == 'y'
+        round
+      else
+        return
+      end
+    end
+  end
+
+  private 
+  def player_round
+    question
+    puts "\n#answer: #{@computer_code}"
+    @response = gets.chomp
+    @response_array = @response.split(" ")
+    puts @response_array
+    @response_array.each_with_index do |response, index|
+      if response == @computer_code[index]
+        @win_condition[index] = true
+      else
+        system("clear")
+        puts "Wrong order buddy"
+      end
+        puts "\n\nDone checking..."
+      if @win_condition[0] == true && @win_condition[1] == true && @win_condition[2] == true && @win_condition[3] == true
+        system("clear")
+        puts "Well done, you win!"
+        @player_won = true
+      end
+    end
+    @rounds += 1
+  end
+
+  private
+  def random_colors
+    @colors = COLORS.shuffle
+    @colors
+  end
+
+  private
+  def reset 
+    @player_won = false
+    @rounds = 0
+  end
+
+  public
+  def round
+      @computer_code = random_colors
+      player_round
+      if @player_won == true
+        continue
+        while @continue != 'y' || @continue != 'n' do
+          @continue = gets.chomp
+          if @continue == 'y'
+            reset
+            round
+          else
+            break
+          end
+        end
+      elsif @player_won == false && @rounds == 12
+        player_lost
+        continue
+        while @continue != 'y' || @continue != 'n' do
+          @continue = gets.chomp
+          if @continue == 'y'
+            reset
+            round
+          else 
+            break
+          end
+        end
+      else
+        player_round
+      end
   end
 end
 
