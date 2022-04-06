@@ -137,42 +137,40 @@ class Game
 
   public
   def round
-      @computer_code = random_colors
+    @computer_code = random_colors
+    while @player_won == false || @player_lost == false do
       player_round
-      if @player_won == true
-        continue
-        while @continue != 'y' || @continue != 'n' do
-          @continue = gets.chomp
-          if @continue == 'y'
-            reset
-            round
-            break
-          elsif @continue == 'n'
-            break
-          end
-        end
-      elsif @player_won == false && @rounds == 12
-        player_lost
-        @player_lost = true
-        continue
-        while @continue != 'y' || @continue != 'n' do
-          @continue = gets.chomp
-          if @continue == 'y'
-            reset
-            round
-            break
-          elsif @continue == 'n' 
-            break
-          end
-        end
-      else
-        while @player_won == false || @player_lost == false do
-          player_round
-          if @player_won == true || @player_lost == true
-            break
-          end
+      if @player_won == true || @player_lost == true
+        break
+      end
+    end
+    if @player_won == true
+      continue
+      while @continue != 'y' || @continue != 'n' do
+        @continue = gets.chomp
+        if @continue == 'y'
+          reset
+          round
+          break
+        elsif @continue == 'n'
+          break
         end
       end
+    elsif @player_won == false && @rounds == 12
+      player_lost
+      @player_lost = true
+      continue
+      while @continue != 'y' || @continue != 'n' do
+        @continue = gets.chomp
+        if @continue == 'y'
+          reset
+          round
+          break
+        elsif @continue == 'n' 
+          break
+        end
+      end
+    end
   end
 end
 
