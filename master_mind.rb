@@ -104,9 +104,7 @@ class Game
     mode_options
     @options = gets.chomp
     while @options != 'g' || @options != 'c' do
-      if @options == 'g'
-        break
-      elsif @options == 'c'
+      if @options == 'g' || @options == 'c'
         break
       end
     end
