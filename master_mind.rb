@@ -54,6 +54,13 @@ module Message
     puts "g) Guesser\n"
     puts "c) Creator of the secret code\n"
   end
+
+  def coder_round_start
+    system("clear")
+    puts "Choose the color and the order please sir"
+    puts "\n\n(I'm not looking XD)"
+    puts "\n\n(Remember to write the color and then space and then the next color)"
+  end
 end
 
 module Colors
@@ -93,8 +100,34 @@ class Game
       if @continue == 'y' && @options == 'g'
         round
         break
+      elsif @continue == 'y' && @options == 'c'
+        coder_round
+        break
       elsif @continue == 'n'
         break
+      end
+    end
+  end
+
+  private
+  def coder_round
+    coder_round_start
+    puts ""
+    print COLORS
+    code = gets.chomp
+    @player_code = code.split(" ")
+    @player_code.each_with_index do |color, index|
+      shuffled = @player_code.shuffle
+      print shuffled
+      puts "checking to see if me the computer can guess the color"
+      puts "#{color} is #{shuffled[index]}?"
+      sleep(5)
+      if color == shuffled[index]
+        puts "\n\nIt is the correct color, i'm so good at this game :)"
+        sleep(5)
+      else
+        puts "I kinda suck at this game :("
+        sleep(5)
       end
     end
   end
